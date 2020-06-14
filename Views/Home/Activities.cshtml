@@ -1,0 +1,60 @@
+@model List<PlannedActivity>
+
+<h1>Dojo Activity Center</h1>
+<h3>Welcome @ViewBag.LoggedUser.FirstName</h3>
+<a asp-controller='Home' asp-action='Logout'>Logout</a><br><br>
+
+<table class="table table-striped">
+    <tr>
+        <th>Activity</th>
+        <th>Date and Time</th>
+        <th>Duration</th>
+        <th>Event Coordinator</th>
+        <th>No. of Participants</th>
+        <th>Actions</th>
+    </tr>
+        @foreach(var entry in @Model)
+        {   
+            // Wont display activities that have passed
+            if(entry.Date >= DateTime.Now.Date)
+            {
+                bool hasJoined = false;
+
+                <tr>
+                    <td><a href="Activity/@entry.PlannedActivityId">@entry.Title</a></td>
+                    <td>@entry.Date.Month / @entry.Date.Day @@ @entry.Time</td>
+                    <td>@entry.Duration @entry.DurationLengthType</td>
+                    @foreach (var user in ViewBag.AllUsers)
+                    {
+                        if(entry.Creator.UserId == user.UserId)
+                        {
+                            <td>@user.FirstName @user.LastName</td>
+                        }
+                    }
+                    <td>@entry.Participants.Count</td>
+
+                    @foreach(var user in entry.Participants)
+                    {
+                        if(user.UserId == ViewBag.LoggedUser.UserId)
+                        {
+                            hasJoined = true;
+                        }
+                    }
+
+                    @if(entry.Creator.UserId == ViewBag.LoggedUser.UserId)
+                    {
+                        <td><a href="Activity/@entry.PlannedActivityId/Delete">Delete</a></td>
+                    }
+                    @if(entry.Creator.UserId != ViewBag.LoggedUser.UserId && !hasJoined)
+                    {
+                        <td><a href="Activity/@entry.PlannedActivityId/Join">Join</a></td>
+                    }
+                    @if(entry.Creator.UserId != ViewBag.LoggedUser.UserId && hasJoined)
+                    {
+                        <td><a href="Activity/@entry.PlannedActivityId/Leave">Leave</a></td>
+                    }
+                
+            </tr>
+            }  
+        }
+</table>

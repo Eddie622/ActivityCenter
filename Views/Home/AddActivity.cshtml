@@ -1,0 +1,41 @@
+@model PlannedActivity
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1 class="display-4">Registration</h1>
+    
+<form asp-action="CreateActivity" asp-controller="Home" method="post">
+    <span asp-validation-for="Title"></span><br>
+    <label asp-for="Title"></label>
+    <input asp-for="Title"><br><br>
+        
+    <span asp-validation-for="Time"></span><br>
+    <label asp-for="Time"></label>
+    <input asp-for="Time"><br><br>
+
+    <span asp-validation-for="Date"></span><br>
+    <label asp-for="Date"></label>
+    <input asp-for="Date"><br><br>
+
+    <span asp-validation-for="Duration"></span><br>
+    <label asp-for="Duration"></label>
+    <input asp-for="Duration">
+
+    <select asp-for="DurationLengthType">
+        <option value="Minute(s)">Minute(s)</option>
+        <option value="Hour(s)">Hour(s)</option>
+        <option value="Day(s)">Day(s)</option>
+        <option value="Week(s)">Week(s)</option>
+        <option value="Month(s)">Month(s)</option>
+    </select><br>
+
+    <span asp-validation-for="Description"></span><br>
+    <label asp-for="Description"></label>
+    <input asp-for="Description"><br><br>
+
+    <input hidden asp-for="UserId" value="@ViewBag.LoggedUser.UserId">
+
+    <input value="Plan Activity" type="submit">    
+</form>

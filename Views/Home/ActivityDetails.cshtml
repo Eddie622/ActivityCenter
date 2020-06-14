@@ -1,0 +1,17 @@
+@model PlannedActivity
+
+<h1>@Model.Title</h1><br>
+<h3>Event Coordinator: @ViewBag.Creator.FirstName @ViewBag.Creator.LastName</h3><br>
+
+<h4>Description: </h4>
+<p>@Model.Description</p>
+
+<h4>Participants (Other than Coordinator): </h4>
+
+@foreach (var participant in @Model.Participants)
+{
+    if(participant.User.UserId != ViewBag.Creator.UserId)
+    {
+        <p>@participant.User.FirstName @participant.User.LastName</p>
+    }
+}
